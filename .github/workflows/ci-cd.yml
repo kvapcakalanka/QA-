@@ -6,18 +6,38 @@
 
 name: CI/CD Pipeline
 
-on: [push]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
       - name: Install dependencies
         run: npm install
+
       - name: Run unit tests
         run: npm run test:unit
+
+      - name: Run UI/API tests
+        run: npm run test:ui
+
       - name: Lint code
         run: npm run lint
-      # Add deploy step as needed
+
+      # Optional: only runs if all previous steps succeed
+      - name: Deploy
+        if: success()
+        run: echo "🚀 Deploy step goes here"
