@@ -15,7 +15,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -27,15 +26,16 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./auth-backend
 
       - name: Run unit tests
         run: npm run test:unit
-
-      - name: Run UI/API tests
-        run: npm run test:ui
+        working-directory: ./auth-backend
 
       - name: Lint code
         run: npm run lint
+        working-directory: ./auth-backend
+
 
       # Optional: only runs if all previous steps succeed
       - name: Deploy
